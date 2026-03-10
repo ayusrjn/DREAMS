@@ -57,5 +57,5 @@ def _row_to_memory(row) -> Memory:
         timestamp=datetime.fromisoformat(row[2]),
         image_path=row[3], caption=row[4], scene_label=row[5],
         vad={'v': row[6], 'a': row[7], 'd': row[8]} if row[6] is not None else None, # Updated keys and added null check
-        gps=(row[9], row[10]) if row[9] else None
+        gps=(row[9], row[10]) if row[9] is not None else None
     )
