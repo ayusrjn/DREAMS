@@ -49,9 +49,10 @@ class VectorStore:
                 metadatas=[metadata]
             )
 
-    def find_similar(self, memory_id: str, top_k: int = 5) -> list[str]:
+    def find_similar(self, memory_id: str, top_k: int = 5) -> list[tuple[str, float]]:
         """
         Retrieves the top_k most similar memories to the given memory_id based on caption embeddings.
+        Returns a list of tuples containing (memory_id, distance).
         """
         try:
             query_result = self._captions.get(ids=[memory_id], include=['embeddings'])
@@ -65,14 +66,22 @@ class VectorStore:
                 n_results=top_k + 1
             )
             
-            return [mid for mid in result['ids'][0] if mid != memory_id][:top_k]
+            matches = []
+            for i in range(len(result['ids'][0])):
+                mid = result['ids'][0][i]
+                if mid != memory_id:
+                    distance = result['distances'][0][i] if 'distances' in result and result['distances'] else 0.0
+                    matches.append((mid, distance))
+            
+            return matches[:top_k]
         except Exception as e:
             print(f"Error finding similar memories by caption: {e}")
             return []
 
-    def find_similar_scenes(self, memory_id: str, top_k: int = 5) -> list[str]:
+    def find_similar_scenes(self, memory_id: str, top_k: int = 5) -> list[tuple[str, float]]:
         """
         Retrieves the top_k most similar memories to the given memory_id based on scene embeddings.
+        Returns a list of tuples containing (memory_id, distance).
         """
         try:
             query_result = self._scenes.get(ids=[memory_id], include=['embeddings'])
@@ -86,7 +95,14 @@ class VectorStore:
                 n_results=top_k + 1
             )
             
-            return [mid for mid in result['ids'][0] if mid != memory_id][:top_k]
+            matches = []
+            for i in range(len(result['ids'][0])):
+                mid = result['ids'][0][i]
+                if mid != memory_id:
+                    distance = result['distances'][0][i] if 'distances' in result and result['distances'] else 0.0
+                    matches.append((mid, distance))
+            
+            return matches[:top_k]
         except Exception as e:
             print(f"Error finding similar memories by scene: {e}")
             return []
