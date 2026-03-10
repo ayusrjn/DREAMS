@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "dreams-pipeline"
+version = "0.1.0"
+description = "DREAMS — Cognitive memory graph pipeline"
+requires-python = ">=3.10"
+dependencies = [
+    "torch",
+    "torchvision",
+    "transformers",
+    "sentence-transformers",
+    "chromadb",
+    "networkx",
+    "matplotlib",
+    "Pillow",
+    "numpy",
+]
+
+[project.scripts]
+dreams-run = "orchestrator:main"
+dreams-trajectory = "plot_trajectory:main"
+dreams-scene-profile = "scene_profile:main"
+
+[tool.setuptools]
+py-modules = ["orchestrator", "plot_trajectory", "scene_profile", "ingest_and_visualize"]
+packages = ["models", "ingestion", "ingestion.extractors", "graph", "graph.edges", "storage", "config", "tests"]
