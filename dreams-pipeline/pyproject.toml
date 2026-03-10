@@ -21,8 +21,6 @@ dependencies = [
 
 [project.scripts]
 dreams-run = "orchestrator:main"
-dreams-trajectory = "plot_trajectory:main"
-dreams-scene-profile = "scene_profile:main"
 
 [tool.setuptools]
 py-modules = ["orchestrator", "plot_trajectory", "scene_profile", "ingest_and_visualize"]
